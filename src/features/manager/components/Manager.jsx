@@ -14,7 +14,7 @@ export default function Manager() {
     return (
         <div className="flex flex-col space-y-20 justify-center items-center h-dvh bg-gradient-to-t from-to-gray-main from-10% to-gray-main to-60% w-full text-white">
 
-            <div  className='absolute -left-40 top-72'>
+            <div  className='fixed -left-40 top-72'>
                 <img src={Gravura} alt="Gravura" style={{height:'600px'}}  />
             </div>
 

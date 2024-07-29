@@ -15,7 +15,7 @@ export default function Header() {
         <header style={{ backgroundColor: '#161815' }}>
             {currentPath === '/'
                 ? <div className='flex justify-between bg-transparent' />
-                : <div className='flex justify-between bg-transparent'>
+                : <div className='flex justify-between bg-transparent fixed top-0 left-0 right-0'>
 
                     <div style={{ width: '150px' }} className='flex items-center p-5'>
                         <img src={logo} />

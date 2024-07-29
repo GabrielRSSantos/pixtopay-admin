@@ -25,7 +25,7 @@ export default function Manager() {
             </div>
 
             <div className='flex space-x-10'>
-                <button className='flex flex-col border rounded-xl p-5 w-60 h-72 space-y-5 bg-gray-500/20 transition-colors duration-500 hover:bg-gray-500'>
+                <button onClick={handleEditores} className='flex flex-col border rounded-xl p-5 w-60 h-72 space-y-5 bg-gray-500/20 transition-colors duration-500 hover:bg-gray-500'>
                     <div className='flex items-center space-x-5'>
                         <LuUser2 size={40} />
                         <p className='w-28 text-lg text-start'>Gerenciar editores</p>
@@ -33,7 +33,7 @@ export default function Manager() {
                     <p className='text-start'>Crie, delete e inative um usuário com permissão para editar o blog.</p>
                 </button>
 
-                <button onClick={handleEditores} className='flex flex-col border rounded-xl p-5 w-60 h-72 space-y-5 bg-gray-500/20 transition-colors duration-500 hover:bg-gray-500'>
+                <button  className='flex flex-col border rounded-xl p-5 w-60 h-72 space-y-5 bg-gray-500/20 transition-colors duration-500 hover:bg-gray-500'>
                     <div className='flex items-center space-x-5'>
                         <LuTextCursorInput size={40} />
                         <p className='w-28 text-lg text-start'>Editar o blog</p>

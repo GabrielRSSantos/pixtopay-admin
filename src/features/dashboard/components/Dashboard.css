@@ -1,0 +1,52 @@
+:root {
+    --icon-color: black; /* Cor padrão */
+    --icon-hover-color: #b9f601; /* Cor no hover */
+  }
+  
+  /* Quando a div pai é hovered, muda a variável da cor do ícone */
+  #test:hover .icon {
+    color: var(--icon-hover-color);
+  }
+  
+  /* Classe do ícone usa a variável de cor */
+  .icon {
+    color: var(--icon-color);
+  }
+
+@keyframes appear {
+    from {
+        bottom: 220px;
+        left: 50px;
+    }
+
+    to {
+        bottom: 60px;
+        left: 250px;
+    }
+}
+
+@keyframes appear2 {
+    from {
+        top: 0px;
+        left: 0px;
+    }
+
+    to {
+        top: 50px;
+        left: 50px;
+    }
+}
+
+.image-1-anim {
+    animation: appear 5s;
+    animation-timeline: view();
+    position: relative;
+    bottom: 220px;
+    left: 50px;
+}
+
+.image-2-anim {
+    animation: appear2 5s;
+    animation-timeline: view();
+    position: relative;
+}

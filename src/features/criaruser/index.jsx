@@ -1,0 +1,1 @@
+export { default as CriarUser } from './components/CriarUser';

@@ -1,0 +1,1 @@
+export { default as Editores } from './components/Editores';

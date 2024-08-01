@@ -3,15 +3,17 @@ import pixtopayimage from '../../../assets/images/pixtopayimage.png';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
+import axiosInstance from '../../../services/axiosConfig';
+import { useAuth } from '../../../routes/AuthContext';
 
 export default function Login() {
 
     const navigate = useNavigate();
+    const { login } = useAuth();
     const { t, i18n } = useTranslation();
-    const [formData, setFormData] = useState({
-        password: '',
-        email: '',
-    });
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
     const [showPassword, setShowPassword] = useState(false);
 
@@ -19,37 +21,29 @@ export default function Login() {
         setShowPassword(!showPassword);
     };
 
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.id]: e.target.value
-        });
-    };
-
     const sendContato = (e) => {
         e.preventDefault();
-        const contato = {
-            password: formData.password,
-            email: formData.email,
-        };
-        console.log(contato);
-        // axiosInstance.post('http://localhost:5036/Blog/contato', {
-        //   nome: formData.first_name,
-        //   email: formData.email,
-        //   tel: formData.tel,
-        //   company: formData.company,
-        //   message: formData.mensagem
-        // })
-        //   .then(response => {
-        //     console.log('Dados enviados com sucesso:', response.data);
-        //   })
-        //   .catch(error => {
-        //     console.error('Houve um erro ao enviar os dados:', error);
-        //   });
-    };
+        axiosInstance.post('http://localhost:5036/User/login', {
+            email: email,
+            password: password
+        }, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                console.log('Dados enviados com sucesso:', response.data);
+                login();
+                navigate('/manager');
+            })
+            .catch(error => {
+                console.error('Houve um erro ao enviar os dados:', error.response ? error.response.data : error.message);
+                setErrorMessage('Email ou senha incorretos');
+                setTimeout(() => {
+                    setErrorMessage('');
+                }, 2000);
 
-    const handleLogin = () => {
-        navigate('/manager');
+            });
     };
 
     return (
@@ -78,8 +72,8 @@ export default function Login() {
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Email"
                                     required
-                                    value={formData.email}
-                                    onChange={handleChange}
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                 />
                             </div>
 
@@ -97,8 +91,8 @@ export default function Login() {
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         placeholder="Password"
                                         required
-                                        value={formData.password}
-                                        onChange={handleChange}
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
                                     />
                                     <button
                                         type="button"
@@ -113,12 +107,17 @@ export default function Login() {
 
 
                         <button
-                            onClick={handleLogin}
                             className="text-black focus:outline-none bg-lime-400 hover:bg-lime-500 focus:ring-4 font-semibold rounded-lg text-sm p-2 mt-14"
                         >
                             {t("Entrar")}
                         </button>
                     </form>
+
+                    {errorMessage && (
+                        <div className="bg-red-300 border-2 rounded-xl mt-5 border-red-400 p-3 text-red-800 font-semibold">
+                            {errorMessage}
+                        </div>
+                    )}
 
                 </div>
 

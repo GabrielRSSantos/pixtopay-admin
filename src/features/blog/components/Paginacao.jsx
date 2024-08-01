@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import Card from './Card';
 import axiosInstance from '../../../services/axiosConfig';
+import { LuPencil, LuTrash2 } from "react-icons/lu";
+import Modal from '../../editores/components/Modal';
 
 
-const PaginatedList = () => {
+const PaginatedList = ({ id }) => {
     const [totalItems, setTotalItems] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
+    const [blogIdToDelete, setBlogIdToDelete] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -33,12 +37,38 @@ const PaginatedList = () => {
         return data.map((item) => (
             <Card
                 key={item.id}
+                id={item.id}
                 nome={item.nome}
                 descricao={item.description}
                 foto={item.image}
             />
         ));
     }
+
+    const handleConfirmDelete = () => {
+        if (blogIdToDelete !== null) {
+            axiosInstance.delete(`/Blog/${blogIdToDelete}`)
+                .then(response => {
+                    console.log('Blog deletado com sucesso:', response.data);
+                    // Atualiza a lista de blogs removendo o blog deletado
+                    setTotalItems(totalItems.filter(item => item.key !== blogIdToDelete));
+                    setIsModalOpen(false);
+                })
+                .catch(error => {
+                    console.error('Houve um erro ao deletar o blog:', error.response ? error.response.data : error.message);
+                    setIsModalOpen(false);
+                });
+        }
+    };
+
+    const handleDeleteClick = (id) => {
+        setBlogIdToDelete(id);
+        setIsModalOpen(true);
+    };
+
+    const handleCancelDelete = () => {
+        setIsModalOpen(false);
+    };
 
     // const [totalItems, setTotalItems] = useState([
     //     <Card key={1} nome={"Gabriel"} descricao={"Teste"} foto={ComputerImage} />,
@@ -62,7 +92,7 @@ const PaginatedList = () => {
     //     <Card key={12} foto={ComputerImage} />,
     // ]);
 
-    
+
     const itemsPerPage = 6;
 
     const indexOfLastItem = currentPage * itemsPerPage;
@@ -108,9 +138,27 @@ const PaginatedList = () => {
 
     return (
         <div>
+            <Modal
+                className="z-10"
+                isOpen={isModalOpen}
+                onClose={handleCancelDelete}
+                onConfirm={handleConfirmDelete}
+            />
             <ul className='grid grid-cols-2 gap-x-10 text-white'>
                 {currentItems.map((item, index) => (
                     <li key={index}>
+                        <div className={`relative -bottom-40 left-[250px] ${isModalOpen ? 'z-0' : 'z-10'} `}>
+                            <div className=" p-2">
+                                <button className="flex items-center justify-center w-10 h-10 rounded-full bg-lime-400">
+                                    <LuPencil color='black' className="cursor-pointer" size={20} />
+                                </button>
+                            </div>
+                            <div className=" p-2">
+                                <button className="flex items-center justify-center w-10 h-10 rounded-full bg-white">
+                                    <LuTrash2 color='black' onClick={() => handleDeleteClick(item.key)} className="cursor-pointer" size={20} />
+                                </button>
+                            </div>
+                        </div>
                         {item}
                     </li>
                 ))}
@@ -124,7 +172,10 @@ const PaginatedList = () => {
                     Next
                 </button>
             </div>
+
         </div>
+
+
     );
 };
 

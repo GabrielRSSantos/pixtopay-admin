@@ -19,7 +19,7 @@ export default function Blog() {
                  <div>
                     <h1 className="text-4xl font-bold">Temas recentes</h1>
                     <div className=""> 
-
+                        
                         <PaginatedList />
 
                      </div>

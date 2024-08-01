@@ -1,27 +1,19 @@
 import React, { useState } from "react";
 import { useTranslation } from 'react-i18next';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
-import { useNavigate  } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import axiosInstance from "../../../services/axiosConfig";
 
 export default function CriarUser() {
     const { t, i18n } = useTranslation();
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setConfirmPassword] = useState(false);
-
-    const [formData, setFormData] = useState({
-        first_name: '',
-        email: '',
-        password: '',
-        confirm_password: ''
-    });
-
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.id]: e.target.value
-        });
-    };
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [passwordConfirm, setPasswordConfirm] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -33,27 +25,30 @@ export default function CriarUser() {
 
     const sendContato = (e) => {
         e.preventDefault();
-        const contato = {
-            first_name: formData.first_name,
-            email: formData.email,
-            tel: formData.tel,
-            company: formData.company,
-            mensagem: formData.mensagem
+
+        if (password !== passwordConfirm) {
+            setErrorMessage('Senhas incompatíveis');
+                setTimeout(() => {
+                    setErrorMessage('');
+                }, 2000);
+            return;
+        }
+
+        const userData = {
+            name,
+            email,
+            password
         };
-        console.log(contato);
-        // axiosInstance.post('http://localhost:5036/Blog/contato', {
-        //   nome: formData.first_name,
-        //   email: formData.email,
-        //   tel: formData.tel,
-        //   company: formData.company,
-        //   message: formData.mensagem
-        // })
-        //   .then(response => {
-        //     console.log('Dados enviados com sucesso:', response.data);
-        //   })
-        //   .catch(error => {
-        //     console.error('Houve um erro ao enviar os dados:', error);
-        //   });
+
+        axiosInstance.post('http://localhost:5036/User/create', userData)
+            .then(response => {
+                console.log('Usuário criado com sucesso:', response.data);
+                navigate('/editores');
+            })
+            .catch(error => {
+                console.error('Houve um erro ao criar o usuário:', error.response ? error.response.data : error.message);
+                
+            });
     };
 
     const handleVoltar = () => {
@@ -78,8 +73,8 @@ export default function CriarUser() {
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 placeholder={t("Nome")}
                                 required
-                                value={formData.first_name}
-                                onChange={handleChange}
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
                             />
                         </div>
 
@@ -91,8 +86,8 @@ export default function CriarUser() {
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 placeholder="Email"
                                 required
-                                value={formData.email}
-                                onChange={handleChange}
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                             />
                         </div>
 
@@ -110,8 +105,8 @@ export default function CriarUser() {
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Password"
                                     required
-                                    value={formData.password}
-                                    onChange={handleChange}
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
                                 />
                                 <button
                                     type="button"
@@ -137,8 +132,8 @@ export default function CriarUser() {
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Confirme a senha"
                                     required
-                                    value={formData.confirm_password}
-                                    onChange={handleChange}
+                                    value={passwordConfirm}
+                                    onChange={(e) => setPasswordConfirm(e.target.value)}
                                 />
                                 <button
                                     type="button"
@@ -152,6 +147,7 @@ export default function CriarUser() {
 
                     </form>
                     <button
+                        onClick={sendContato}
                         type="submit"
                         className="text-black focus:outline-none bg-lime-400 hover:bg-lime-500 focus:ring-4 font-semibold rounded-lg text-sm p-2"
                     >
@@ -159,7 +155,11 @@ export default function CriarUser() {
                     </button>
 
                 </div>
-
+                {errorMessage && (
+                    <div className="bg-red-300 border-2 rounded-xl mt-5 border-red-400 p-3 text-red-800 font-semibold">
+                        {errorMessage}
+                    </div>
+                )}
             </div>
         </div>
     );

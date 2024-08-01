@@ -11,6 +11,10 @@ export default function Manager() {
         navigate('/editores'); 
     };
 
+    const handleEditarBlogs = () => {
+        navigate('/editarblogs'); 
+    };
+
     return (
         <div className="flex flex-col space-y-20 justify-center items-center h-dvh bg-gradient-to-t from-to-gray-main from-10% to-gray-main to-60% w-full text-white">
 
@@ -33,7 +37,7 @@ export default function Manager() {
                     <p className='text-start'>Crie, delete e inative um usuário com permissão para editar o blog.</p>
                 </button>
 
-                <button  className='flex flex-col border rounded-xl p-5 w-60 h-72 space-y-5 bg-gray-500/20 transition-colors duration-500 hover:bg-gray-500'>
+                <button onClick={handleEditarBlogs}  className='flex flex-col border rounded-xl p-5 w-60 h-72 space-y-5 bg-gray-500/20 transition-colors duration-500 hover:bg-gray-500'>
                     <div className='flex items-center space-x-5'>
                         <LuTextCursorInput size={40} />
                         <p className='w-28 text-lg text-start'>Editar o blog</p>

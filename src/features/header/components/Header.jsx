@@ -19,13 +19,13 @@ export default function Header() {
 
             {currentPath === '/'
                 ? <div className='flex justify-between bg-transparent' />
-                : <div className={`flex justify-between bg-transparent ${isFixed ? 'fixed top-0 left-0 right-0' : ''}`}>
+                : <div className={`lg:flex justify-between bg-transparent ${isFixed ? 'lg:fixed top-0 left-0 right-0' : ''}`}>
 
                     <div style={{ width: '150px' }} className='flex items-center p-5'>
                         <img src={logo} />
                     </div>
 
-                    <nav className='p-2 text-white self-end flex gap-10 items-center'>
+                    <nav className='p-2 text-white self-end flex gap-7 lg:gap-10 items-center'>
                         <Link to="/manager" className='transition-all duration-300 p-2 text-gray-500 hover:text-white'>{t("Inicio")}</Link>
                         <Link to="/editarblogs" className='transition-all duration-300 p-2 text-gray-500 hover:text-white'>{t("Postagens")}</Link>
                         <Link to="/rascunhos" className='transition-all duration-300 p-2 text-gray-500 hover:text-white'>Rascunhos</Link>

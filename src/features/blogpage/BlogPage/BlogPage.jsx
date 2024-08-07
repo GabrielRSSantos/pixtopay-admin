@@ -149,7 +149,7 @@ Nam in finibus mi. Aenean lacus justo, porttitor non ullamcorper a, dapibus id f
                                 </div>
                             </div>
                         ) : (
-                            <div className='flex justify-between items-center'>
+                            <div className='flex justify-between lg:items-center items-start'>
                                 <p>{text}</p>
                                 <div className='flex flex-col items-center justify-center'>
                                     <button className="flex items-center justify-center w-10 h-10 rounded-full bg-lime-400">

@@ -72,8 +72,8 @@ export default function Editores() {
 
             <button onClick={handleVoltar} className="bg-lime-400 self-start m-10 w-20 rounded-xl p-3 text-black font-semibold">Voltar</button>
 
-            <div className="flex flex-col items-center border w-3/6 bg-gray-500/20 rounded-xl p-10 space-y-20">
-                <h1 className="text-6xl font-bold">Lista de editores</h1>
+            <div className="flex flex-col items-center border lg:w-3/6 bg-gray-500/20 rounded-xl p-10 space-y-20">
+                <h1 className="text-6xl font-bold lg:text-start text-center">Lista de editores</h1>
 
                 <div className="space-y-10">
                     {users.map(user => (
@@ -101,17 +101,17 @@ export default function Editores() {
 
 const User = ({ id, name, onDeleteClick, onEditClick }) => {
     return (
-        <div className="flex items-center space-x-40">
+        <div className="flex items-center lg:space-x-40">
             <span className="w-40 ms-3 text-sm font-medium text-white dark:text-gray-300">{name}</span>
             <div className="flex space-x-5">
                 <div className="flex space-x-2">
                     <LuTrash2 onClick={() => onDeleteClick(id)} className="cursor-pointer" size={20} />
                     <LuPencil onClick={() => onEditClick(id)} className="cursor-pointer" size={20} />
                 </div>
-                <label className="flex items-center cursor-pointer bg-transparent">
+                {/* <label className="flex items-center cursor-pointer bg-transparent">
                     <input type="checkbox" id="toggle" className="sr-only peer" />
                     <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-lime-400"></div>
-                </label>
+                </label> */}
             </div>
         </div>
     );

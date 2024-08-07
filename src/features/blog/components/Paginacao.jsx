@@ -3,9 +3,12 @@ import Card from './Card';
 import axiosInstance from '../../../services/axiosConfig';
 import { LuPencil, LuTrash2 } from "react-icons/lu";
 import Modal from '../../editores/components/Modal';
+import { useNavigate  } from 'react-router-dom';
 
 
 const PaginatedList = ({ id }) => {
+    const navigate = useNavigate();
+
     const [totalItems, setTotalItems] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [blogIdToDelete, setBlogIdToDelete] = useState(null);
@@ -117,6 +120,12 @@ const PaginatedList = ({ id }) => {
         setCurrentPage(pageNumber);
     };
 
+    const handleBlogPage = (id) => {
+        navigate('/blogpage', {
+            state: { id }
+        });
+    };
+
     const renderPageNumbers = () => {
         const pageNumbers = [];
         for (let i = 1; i <= totalPages; i++) {
@@ -144,13 +153,13 @@ const PaginatedList = ({ id }) => {
                 onClose={handleCancelDelete}
                 onConfirm={handleConfirmDelete}
             />
-            <ul className='grid grid-cols-2 gap-x-10 text-white'>
+            <ul className='grid lg:grid-cols-2 gap-x-10 text-white'>
                 {currentItems.map((item, index) => (
                     <li key={index}>
                         <div className={`relative -bottom-40 left-[250px] ${isModalOpen ? 'z-0' : 'z-10'} `}>
                             <div className=" p-2">
                                 <button className="flex items-center justify-center w-10 h-10 rounded-full bg-lime-400">
-                                    <LuPencil color='black' className="cursor-pointer" size={20} />
+                                    <LuPencil color='black' onClick={() => handleBlogPage(item.key)} className="cursor-pointer" size={20} />
                                 </button>
                             </div>
                             <div className=" p-2">
